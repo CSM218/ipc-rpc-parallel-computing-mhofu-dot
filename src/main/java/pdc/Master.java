@@ -127,7 +127,13 @@ public class Master {
         } catch (Exception e) {
             System.err.println("[Master] Worker connection error: " + e.getMessage());
         } finally {
-            socket = null;
+            try {
+                if (socket != null && !socket.isClosed()) {
+                    socket.close();
+                }
+            } catch (IOException e) {
+                System.err.println("[Master] Error closing socket: " + e.getMessage());
+            }
         }
     }
 
